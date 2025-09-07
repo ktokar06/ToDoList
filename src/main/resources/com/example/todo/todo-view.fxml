@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.effect.DropShadow?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.todo.ToDoController"
+            prefHeight="700" prefWidth="1200"
+            style="-fx-background-color: linear-gradient(to bottom right, #f5f7fa 0%, #c3cfe2 100%);">
+
+    <!-- Верхняя панель с заголовком и формой добавления -->
+    <top>
+        <VBox spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.95); -fx-background-radius: 0 0 20 20; -fx-padding: 25;">
+            <effect>
+                <DropShadow blurType="GAUSSIAN" radius="15" offsetX="0" offsetY="4" color="rgba(0,0,0,0.1)" />
+            </effect>
+
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <Label text="✨ ToDo List"
+                       style="-fx-font-size: 32px; -fx-font-weight: 800; -fx-text-fill: linear-gradient(to right, #667eea, #764ba2);"/>
+
+                <HBox spacing="10" alignment="CENTER" style="-fx-background-color: #f8f9fa; -fx-background-radius: 15; -fx-padding: 5 15;">
+                    <Label text="📊 Статистика:" style="-fx-text-fill: #7f8c8d; -fx-font-size: 14;"/>
+                    <Label fx:id="totalTasksLabel" text="0" style="-fx-text-fill: #667eea; -fx-font-weight: bold; -fx-font-size: 14;"/>
+                    <Label text="всего," style="-fx-text-fill: #7f8c8d; -fx-font-size: 14;"/>
+                    <Label fx:id="completedTasksLabel" text="0" style="-fx-text-fill: #27ae60; -fx-font-weight: bold; -fx-font-size: 14;"/>
+                    <Label text="выполнено" style="-fx-text-fill: #7f8c8d; -fx-font-size: 14;"/>
+                </HBox>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <TextField fx:id="titleField" promptText="📝 Название задачи"
+                           prefWidth="250" prefHeight="45"
+                           style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #e0e0e0; -fx-padding: 0 15; -fx-font-size: 14; -fx-background-color: #f8f9fa; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);"/>
+
+                <TextField fx:id="descriptionField" promptText="📋 Описание задачи"
+                           prefWidth="350" prefHeight="45"
+                           style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #e0e0e0; -fx-padding: 0 15; -fx-font-size: 14; -fx-background-color: #f8f9fa; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);"/>
+
+                <Button text="➕ Добавить" onAction="#handleAddTodo"
+                        style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 12; -fx-font-size: 14; -fx-pref-height: 45; -fx-pref-width: 120; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 8, 0, 0, 2);"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Центральная область с таблицей -->
+    <center>
+        <VBox spacing="15" style="-fx-padding: 20;">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="📋 Список задач"
+                       style="-fx-font-size: 20px; -fx-font-weight: 700; -fx-text-fill: #2c3e50;"/>
+
+                <Label fx:id="filterLabel" text="(все задачи)"
+                       style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d; -fx-font-style: italic;"/>
+            </HBox>
+
+            <TableView fx:id="todoTable"
+                       style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-color: white; -fx-border-color: #e0e0e0;">
+                <effect>
+                    <DropShadow blurType="GAUSSIAN" radius="20" offsetX="0" offsetY="5" color="rgba(0,0,0,0.08)" />
+                </effect>
+
+                <columns>
+                    <TableColumn fx:id="idColumn" text="🔖 ID" prefWidth="70"
+                                 style="-fx-alignment: CENTER; -fx-font-weight: bold;"/>
+                    <TableColumn fx:id="titleColumn" text="📝 Название" prefWidth="250"
+                                 style="-fx-font-weight: bold;"/>
+                    <TableColumn fx:id="descriptionColumn" text="📋 Описание" prefWidth="350"/>
+                    <TableColumn fx:id="completedColumn" text="✅ Статус" prefWidth="120"
+                                 style="-fx-alignment: CENTER;"/>
+                    <TableColumn fx:id="createdAtColumn" text="📅 Создано" prefWidth="180"/>
+                    <TableColumn fx:id="updatedAtColumn" text="🔄 Обновлено" prefWidth="180"/>
+                    <TableColumn fx:id="actionsColumn" text="⚡ Действия" prefWidth="200"
+                                 style="-fx-alignment: CENTER;"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+    <!-- Нижняя панель с информацией -->
+    <bottom>
+        <HBox alignment="CENTER" spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 20 20 0 0; -fx-padding: 15;">
+            <effect>
+                <DropShadow blurType="GAUSSIAN" radius="10" offsetX="0" offsetY="-2" color="rgba(0,0,0,0.05)" />
+            </effect>
+
+            <Button text="✅ Только выполненные" onAction="#handleShowCompleted"
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 8 15; -fx-cursor: hand;"/>
+
+            <Button text="⏳ Только активные" onAction="#handleShowActive"
+                    style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 8 15; -fx-cursor: hand;"/>
+
+            <Button text="📋 Все задачи" onAction="#handleShowAll"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 8 15; -fx-cursor: hand;"/>
+
+            <Label text="🎯 Всего:" style="-fx-text-fill: #7f8c8d; -fx-font-size: 14;"/>
+            <Label fx:id="footerTotalLabel" text="0" style="-fx-text-fill: #667eea; -fx-font-weight: bold; -fx-font-size: 14;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
