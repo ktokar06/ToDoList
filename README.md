@@ -35,6 +35,6 @@ cd ToDoList
 
 ### 4. **Интерфейс пользователя**
 
-![Интерфейс ToDo List приложения](/ui_users.png)
+![Интерфейс ToDo List приложения](src/main/resources/ui_users.png)
 
 
